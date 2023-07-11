@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Library.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class = "alert alert-warning"> 
+        <strong>Warning!</strong>   @TempData["AlertMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <h1>Books</h1>
+</div>
+
+
+<div class="container -md-10">
+  <div class="row">
+    <div class="col">
+      <form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+    </div>
+    <div class="col">
+      <form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+        Author: <input type="text" name="SearchString2" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+    </div>
+    <div class="col">
+      <form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+        Reservations <input type="checkbox" name="reserved" input ="submit"/>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+    </div>
+  </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
+            </th>
+            <th>
+                <text>Occupation</text>
+            </th
+            @if (User.IsInRole("User") || User.IsInRole("Librarian"))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @if (item.User == null) {
+                    <text>avaiable</text>
+                }
+                else if (item.Reserved != null) {
+                    <text>reserved</text>
+                }
+                else if (item.Leased != null) {
+                    <text>leased</text>
+                }
+            </td>
+            
+                @if (User.IsInRole("User"))
+                {
+                    <td>
+                        <form>
+                    <button  asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">Details</button>
+                    <button  asp-controller="Books" asp-action="Reserve" asp-route-id="@item.Id">Reserve</button>
+                    </form>
+                    </td>
+                }
+                else if (User.IsInRole("Librarian"))
+                {
+                    <td>
+                    <form method="post">
+                        <button asp-controller="Books" asp-action="Rent" asp-route-id="@item.Id">Rent</button>
+                    </form>
+                    </td>
+                }
+        </tr>
+}
+    </tbody>
+</table>

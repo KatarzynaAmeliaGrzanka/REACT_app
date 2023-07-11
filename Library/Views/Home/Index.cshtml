@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Warning!</strong>   @TempData["AlertMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <img src="~/img/books.png" />
+</div>

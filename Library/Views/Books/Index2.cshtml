@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Library.Models.Book>
+
+@{
+    ViewData["Title"] = "Reserved Books";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>Warning!</strong>   @TempData["AlertMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                <a asp-action="Index2" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>               
+                <td>
+                    <form>
+                        <button asp-controller="Books" asp-action="Delete" asp-route-id="@item.Id">Delete reservation</button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

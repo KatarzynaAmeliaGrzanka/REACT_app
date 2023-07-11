@@ -1,0 +1,16 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<div class="text-center">
+    <h3>@ViewData["Title"]</h3>
+    <h4>Change your profile informations</h4>
+</div>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
